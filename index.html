@@ -1,3 +1,147 @@
-setTimeout(() => {
-    window.location.href = "login.html";
-}, 4000);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Let's Chat</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#0b141a;
+    color:white;
+    font-family:Arial, sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    text-align:center;
+}
+
+.logo{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    background:#25D366;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:50px;
+    margin:auto;
+    animation:pulse 1.5s infinite;
+}
+
+.app-name{
+    margin-top:20px;
+    font-size:32px;
+    font-weight:bold;
+}
+
+.tagline{
+    margin-top:10px;
+    color:#b0b3b8;
+    font-size:16px;
+}
+
+.loading{
+    margin-top:30px;
+}
+
+.loading span{
+    display:inline-block;
+    width:10px;
+    height:10px;
+    margin:0 4px;
+    background:#25D366;
+    border-radius:50%;
+    animation:bounce 1.4s infinite ease-in-out both;
+}
+
+.loading span:nth-child(1){
+    animation-delay:-0.32s;
+}
+
+.loading span:nth-child(2){
+    animation-delay:-0.16s;
+}
+
+.footer{
+    position:absolute;
+    bottom:30px;
+    width:100%;
+    text-align:center;
+    color:#b0b3b8;
+    font-size:14px;
+}
+
+.footer strong{
+    color:#25D366;
+}
+
+@keyframes pulse{
+    0%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.08);
+    }
+    100%{
+        transform:scale(1);
+    }
+}
+
+@keyframes bounce{
+    0%,80%,100%{
+        transform:scale(0);
+    }
+    40%{
+        transform:scale(1);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        💬
+    </div>
+
+    <div class="app-name">
+        Let's Chat
+    </div>
+
+    <div class="tagline">
+        Simple • Fast • Secure
+    </div>
+
+    <div class="loading">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+</div>
+
+<div class="footer">
+    from <strong>GERRAND</strong>
+</div>
+
+<script>
+setTimeout(function(){
+    window.location.href="login.html";
+},4000);
+</script>
+
+</body>
+</html>
