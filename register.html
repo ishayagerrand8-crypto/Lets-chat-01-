@@ -83,4 +83,46 @@ a{
     <button id="registerBtn">Create Account</button>
     
     <p>Already have an account? <a href="login.html">Login</a></p>
-</div>
+</di</div>
+
+    <script type="module">
+        import { auth, db } from './firebase.js';
+        import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const registerBtn = document.getElementById('registerBtn');
+
+        registerBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+
+            if(!name || !email || !password) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            try {
+                // 1. Create the user authentication account
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // 2. Save user profile info in Firestore database
+                await setDoc(doc(db, "users", user.uid), {
+                    uid: user.uid,
+                    displayName: name,
+                    email: email,
+                    createdAt: new Date().toISOString()
+                });
+
+                // 3. Success! Redirect to your main chat screen
+                window.location.href = 'chat.html';
+            } catch (error) {
+                alert("Registration failed: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
