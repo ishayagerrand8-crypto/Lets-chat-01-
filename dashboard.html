@@ -83,7 +83,43 @@ body{
 <div class="header">
     <h2>Let's Chat</h2>
     <span></span>
-</div>
+</div><script type="module">
+        import { auth, db } from './firebase-config.js';
+        import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const registerBtn = document.getElementById('registerBtn');
+
+        registerBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+
+            if(!name || !email || !password) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            try {
+                // 1. Create the user in Firebase Auth
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // 2. Save the name in Firestore
+                await setDoc(doc(db, "users", user.uid), {
+                    displayName: name,
+                    email: email
+                });
+
+                // 3. Move to chat
+                window.location.href = 'chat.html';
+            } catch (error) {
+                alert("Error: " + error.message);
+            }
+        });
+</script>
 
 <div class="chat-list">
 
