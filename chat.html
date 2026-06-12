@@ -111,29 +111,82 @@ body{
 
 <div class="input-area">
     <input type="text" id="messageInput" placeholder="Type a message">
-    <button onclick="sendMessage()">Send</button>
+    <button id="sendBtn">Send</button>
 </div>
 
-<script>
-function sendMessage() {
+<script type="module">
+        import { auth, db } from './firebase.js';
+        import { collection, addDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    const input = document.getElementById("messageInput");
-    const chatArea = document.getElementById("chatArea");
+        const chatArea = document.getElementById('chatArea');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
 
-    if(input.value.trim() === "") return;
+        let currentUser = null;
 
-    const msg = document.createElement("div");
+        // 1. Make sure a user is actually logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                // Load messages in real-time once user is verified
+                loadMessages();
+            } else {
+                // If not logged in, boot them back to login page
+                window.location.href = 'login.html';
+            }
+        });
 
-    msg.className = "message sent";
-    msg.textContent = input.value;
+        // 2. Send Message to Firestore
+        async function sendMessage() {
+            const text = messageInput.value.trim();
+            if (text === "" || !currentUser) return;
 
-    chatArea.appendChild(msg);
+            try {
+                await addDoc(collection(db, "messages"), {
+                    text: text,
+                    uid: currentUser.uid,
+                    senderName: currentUser.displayName || "User",
+                    timestamp: new Date().getTime()
+                });
+                messageInput.value = ""; // Clear input box
+            } catch (error) {
+                console.error("Error sending message: ", error);
+            }
+        }
 
-    input.value = "";
+        // Listen for button click or Enter key
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
 
-    chatArea.scrollTop = chatArea.scrollHeight;
-}
-</script>
-
+        // 3. Listen for Messages in Real-Time
+        function loadMessages() {
+            const q = query(collection(db, "messages"), orderBy("timestamp", "asc"));
+            
+            onSnapshot(q, (snapshot) => {
+                chatArea.innerHTML = ""; // Clear old visual placeholders
+                
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const msgDiv = document.createElement('div');
+                    
+                    // Check if the message was sent by the logged-in user
+                    if (data.uid === currentUser.uid) {
+                        msgDiv.className = "message sent";
+                    } else {
+                        msgDiv.className = "message received";
+                    }
+                    
+                    msgDiv.textContent = data.text;
+                    chatArea.appendChild(msgDiv);
+                });
+                
+                // Auto-scroll to the bottom of the chat box
+                chatArea.scrollTop = chatArea.scrollHeight;
+            });
+        }
+    </script>
 </body>
 </html>
