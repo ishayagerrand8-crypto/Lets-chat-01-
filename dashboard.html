@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Let's Chat</title>
+
+<link rel="stylesheet" href="styles.css">
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#111b21;
+    color:white;
+}
+
+.header{
+    background:#202c33;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    color:#25D366;
+}
+
+.icons{
+    font-size:20px;
+}
+
+.tabs{
+    display:flex;
+    background:#202c33;
+}
+
+.tab{
+    flex:1;
+    text-align:center;
+    padding:12px;
+    color:#8696a0;
+}
+
+.active{
+    color:#25D366;
+    border-bottom:3px solid #25D366;
+}
+
+.chat{
+    display:flex;
+    padding:15px;
+    border-bottom:1px solid #2a3942;
+    cursor:pointer;
+}
+
+.avatar{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    background:#25D366;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-right:12px;
+    font-weight:bold;
+}
+
+.details{
+    flex:1;
+}
+
+.name{
+    font-weight:bold;
+}
+
+.message{
+    color:#8696a0;
+    margin-top:4px;
+}
+
+.time{
+    color:#8696a0;
+    font-size:12px;
+}
+
+.new-chat{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:#25D366;
+    color:white;
+    font-size:35px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+</style>
+
+</head>
+<body>
+
+<div class="header">
+    <div class="logo">Let's Chat</div>
+    <div class="icons">🔍 ⋮</div>
+</div>
+
+<div class="tabs">
+    <div class="tab active">Chats</div>
+    <div class="tab">Status</div>
+    <div class="tab">Calls</div>
+</div>
+
+<div class="chat" onclick="window.location.href='chat.html'">
+    <div class="avatar">J</div>
+
+    <div class="details">
+        <div class="name">John</div>
+        <div class="message">Hello 👋</div>
+    </div>
+
+    <div class="time">10:20</div>
+</div>
+
+<div class="chat">
+    <div class="avatar">S</div>
+
+    <div class="details">
+        <div class="name">Sarah</div>
+        <div class="message">How are you?</div>
+    </div>
+
+    <div class="time">09:45</div>
+</div>
+
+<div class="chat">
+    <div class="avatar">D</div>
+
+    <div class="details">
+        <div class="name">David</div>
+        <div class="message">See you later.</div>
+    </div>
+
+    <div class="time">08:30</div>
+</div>
+
+<div class="new-chat">+</div>
+
+</body>
+</html>
