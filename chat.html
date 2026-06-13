@@ -2,128 +2,69 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chat - Let's Chat</title>
-
+<title>Let's Chat</title>
 <link rel="stylesheet" href="styles.css">
-
-<style>
-.header{
-    display:flex;
-    align-items:center;
-    color:white;
-}
-
-.name{
-    margin-left:10px;
-    font-weight:bold;
-}
-
-.chat-area{
-    height:calc(100vh - 140px);
-    padding:15px;
-    overflow-y:auto;
-}
-
-.message{
-    padding:10px;
-    border-radius:10px;
-    margin:10px 0;
-    max-width:75%;
-}
-
-.received{
-    background:#202c33;
-}
-
-.sent{
-    background:#25D366;
-    margin-left:auto;
-}
-
-.input-area{
-    position:fixed;
-    bottom:0;
-    width:100%;
-    display:flex;
-    padding:10px;
-    background:#202c33;
-}
-
-.input-area input{
-    flex:1;
-    padding:12px;
-    border:none;
-    border-radius:20px;
-}
-
-.input-area button{
-    margin-left:10px;
-}
-</style>
 </head>
 
 <body>
 
-<div class="header">
-    <div class="avatar">J</div>
-    <div class="name">John</div>
-</div>
+<h2>💬 Let's Chat</h2>
 
-<div class="chat-area" id="chatArea">
+<div id="chatBox" style="height:300px; overflow-y:auto; border:1px solid #ccc; padding:10px;"></div>
 
-    <div class="message received">
-        Hello 👋
-    </div>
+<input type="text" id="messageInput" placeholder="Type message..." />
+<button id="sendBtn">Send</button>
 
-    <div class="message sent">
-        Welcome to Let's Chat!
-    </div>
+<script type="module">
+import { db, auth } from "./firebase.js";
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  onSnapshot,
+  query,
+  orderBy
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-</div>
 
-<div class="input-area">
+// 🔥 SEND MESSAGE
+async function sendMessage() {
+  const input = document.getElementById("messageInput");
+  const text = input.value;
 
-    <input
-        type="text"
-        id="messageInput"
-        placeholder="Type a message">
+  if (text.trim() === "") return;
 
-    <button class="btn" onclick="sendMessage()">
-        Send
-    </button>
+  await addDoc(collection(db, "messages"), {
+    text: text,
+    sender: auth.currentUser ? auth.currentUser.email : "guest",
+    time: serverTimestamp()
+  });
 
-</div>
-
-<script>
-function sendMessage(){
-
-    const input =
-    document.getElementById("messageInput");
-
-    const chatArea =
-    document.getElementById("chatArea");
-
-    if(input.value.trim()===""){
-        return;
-    }
-
-    const msg =
-    document.createElement("div");
-
-    msg.className =
-    "message sent";
-
-    msg.textContent =
-    input.value;
-
-    chatArea.appendChild(msg);
-
-    input.value = "";
-
-    chatArea.scrollTop =
-    chatArea.scrollHeight;
+  input.value = "";
 }
+
+
+// 🔥 BUTTON CLICK
+document.getElementById("sendBtn").addEventListener("click", sendMessage);
+
+
+// 🔥 REAL-TIME CHAT
+const q = query(collection(db, "messages"), orderBy("time"));
+
+onSnapshot(q, (snapshot) => {
+  const chatBox = document.getElementById("chatBox");
+  chatBox.innerHTML = "";
+
+  snapshot.forEach((doc) => {
+    const msg = doc.data();
+
+    const div = document.createElement("div");
+    div.textContent = `${msg.sender}: ${msg.text}`;
+    chatBox.appendChild(div);
+  });
+
+  chatBox.scrollTop = chatBox.scrollHeight;
+});
 </script>
 
 </body>
