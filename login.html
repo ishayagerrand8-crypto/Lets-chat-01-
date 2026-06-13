@@ -1,100 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Let's Chat</title>
-
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    background:#0b141a;
-    font-family:Arial,sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-}
-
-.container{
-    width:90%;
-    max-width:400px;
-    background:#202c33;
-    padding:30px;
-    border-radius:15px;
-}
-
-h1{
-    text-align:center;
-    color:#25D366;
-    margin-bottom:20px;
-}
-
-input{
-    width:100%;
-    padding:14px;
-    margin:10px 0;
-    border:none;
-    border-radius:8px;
-    background:#2a3942;
-    color:white;
-    font-size:16px;
-}
-
-button{
-    width:100%;
-    padding:14px;
-    background:#25D366;
-    color:white;
-    border:none;
-    border-radius:8px;
-    font-size:16px;
-    cursor:pointer;
-    margin-top:10px;
-}
-
-button:hover{
-    opacity:0.9;
-}
-
-p{
-    text-align:center;
-    margin-top:20px;
-    color:white;
-}
-
-a{
-    color:#25D366;
-    text-decoration:none;
-}
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Let's Chat</title>
+    <style>
+        *{ margin:0; padding:0; box-sizing:border-box; }
+        body{ background:#0b141a; font-family:Arial,sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; }
+        .container{ width:90%; max-width:400px; background:#202c33; padding:30px; border-radius:15px; }
+        h1{ text-align:center; color:#25D366; margin-bottom:20px; }
+        input{ width:100%; padding:14px; margin:10px 0; border:none; border-radius:8px; background:#2a3942; color:white; font-size:16px; }
+        button{ width:100%; padding:14px; background:#25D366; color:white; border:none; border-radius:8px; font-size:16px; cursor:pointer; margin-top:10px; }
+        button:hover{ opacity:0.9; }
+        p{ text-align:center; margin-top:20px; color:white; }
+        a{ color:#25D366; text-decoration:none; }
+    </style>
 </head>
 <body>
 
 <div class="container">
-
     <h1>Let's Chat</h1>
-
-    <input type="email" placeholder="Email Address">
-
-    <input type="password" placeholder="Password">
-
-    <button onclick="window.location.href='dashboard.html'">
-        Login
-    </button>
-
+    <input type="email" id="email" placeholder="Email Address">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="handleLogin()">Login</button>
     <p>
         Don't have an account?
         <a href="register.html">Create Account</a>
     </p>
-
 </div>
+
+<script>
+    function handleLogin() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Validation Check
+        if (email.trim() === "" || password.trim() === "") {
+            alert("Please fill in both email and password!");
+            return;
+        }
+
+        // Proceed
+        window.location.href = 'dashboard.html';
+    }
+</script>
 
 </body>
 </html>
