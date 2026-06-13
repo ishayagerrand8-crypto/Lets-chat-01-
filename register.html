@@ -35,38 +35,28 @@
     </p>
 </div>
 
-<script>
-    function handleRegister() {
-        const name = document.getElementById('fullname').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        // Validation Check: Ensures no field is empty
-        if (name.trim() === "" || email.trim() === "" || password.trim() === "") {
-            alert("Please fill in all fields to create an account!");
-            return;
-        }
-
-        // Proceed to dashboard if validation passes
-        window.location.href = 'dashboard.html';
-    }
 <script type="module">
-    import { auth } from './firebase.js'; // Make sure this path is correct
+    import { auth } from './firebase.js'; 
     import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
     window.handleRegister = async function() {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
+        console.log("Attempting to connect to Firebase..."); // Add this
+
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            console.log("Success:", userCredential.user);
             alert("Account created successfully!");
             window.location.href = 'dashboard.html';
         } catch (error) {
-            alert("Error: " + error.message);
+            console.error("Firebase Error:", error.code, error.message); // Add this
+            alert("Firebase Error: " + error.message);
         }
     };
 </script>
+
 
 </body>
 </html>
