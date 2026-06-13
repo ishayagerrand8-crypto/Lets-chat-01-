@@ -1,7 +1,3 @@
-// firebase.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyBqfgZ5viIKnzhXMVYctbf-L3NTaSo6bSI",
   authDomain: "let-s-chat-3f5c2.firebaseapp.com",
@@ -10,6 +6,3 @@ const firebaseConfig = {
   messagingSenderId: "870798798773",
   appId: "1:870798798773:web:4bf5120353b75fcff073fc"
 };
-
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
